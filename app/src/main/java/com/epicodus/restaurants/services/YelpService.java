@@ -1,6 +1,9 @@
-package com.epicodus.restaurants;
+package com.epicodus.restaurants.services;
 
 import android.content.Context;
+
+import com.epicodus.restaurants.R;
+import com.epicodus.restaurants.models.Restaurant;
 
 import org.json.JSONArray;
 import org.json.JSONException;
