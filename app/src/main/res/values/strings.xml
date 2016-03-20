@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Restaurants</string>
+    <string name="action_settings">Settings</string>
+    <string name="consumer_key">12345</string>
+    <string name="consumer_secret">12345</string>
+    <string name="token">12345</string>
+    <string name="token_secret">12345</string>
+</resources>
