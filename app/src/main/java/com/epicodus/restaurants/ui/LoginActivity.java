@@ -1,6 +1,8 @@
 package com.epicodus.restaurants.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +28,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
     @Bind(R.id.registerButton) Button mRegisterButton;
 
     private Firebase mFirebaseRef;
+    private ProgressDialog mAuthProgressDialog;
     private Firebase.AuthResultHandler mAuthResultHandler;
 
     @Override
@@ -38,6 +41,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
 
         mPasswordLoginButton.setOnClickListener(this);
         mRegisterButton.setOnClickListener(this);
+        initializeProgressDialog();
         initializeAuthResultHandler();
     }
 
@@ -51,21 +55,17 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void initializeAuthResultHandler() {
-        mAuthResultHandler = new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                goToMainActivity();
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                Log.d("Firebase auth error", firebaseError.toString());
-            }
-        };
+    private void showErrorDialog(String message) {
+        new AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void loginWithPassword() {
+        mAuthProgressDialog.show();
         String email = mEmailEditText.getText().toString();
         String password = mPasswordEditText.getText().toString();
         mFirebaseRef.authWithPassword(email, password, mAuthResultHandler);
@@ -80,6 +80,7 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
     }
 
     public void registerNewUser() {
+        mAuthProgressDialog.show();
         final String email = mEmailEditText.getText().toString();
         final String password = mPasswordEditText.getText().toString();
 
@@ -95,5 +96,27 @@ public class LoginActivity  extends AppCompatActivity implements View.OnClickLis
                 Log.d("Registration error", firebaseError.toString());
             }
         });
+    }
+
+    private void initializeProgressDialog() {
+        mAuthProgressDialog = new ProgressDialog(this);
+        mAuthProgressDialog.setTitle("Loading");
+        mAuthProgressDialog.setMessage("Authenticating with Firebase...");
+        mAuthProgressDialog.setCancelable(true);
+    }
+
+    private void initializeAuthResultHandler() {
+        mAuthResultHandler = new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                goToMainActivity();
+                mAuthProgressDialog.hide();
+            }
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                mAuthProgressDialog.hide();
+                showErrorDialog(firebaseError.toString());
+            }
+        };
     }
 }
