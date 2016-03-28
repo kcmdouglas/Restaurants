@@ -1,5 +1,7 @@
 package com.epicodus.restaurants.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.epicodus.restaurants.MyRestaurantsApplication;
 import com.epicodus.restaurants.R;
 import com.epicodus.restaurants.models.Restaurant;
+import com.firebase.client.Firebase;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
@@ -17,7 +22,7 @@ import org.parceler.Parcels;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class RestaurantDetailFragment extends Fragment {
+public class RestaurantDetailFragment extends Fragment implements View.OnClickListener {
     private static final int MAX_WIDTH = 400;
     private static final int MAX_HEIGHT = 300;
     @Bind(R.id.restaurantImageView) ImageView mImageLabel;
@@ -28,6 +33,8 @@ public class RestaurantDetailFragment extends Fragment {
     @Bind(R.id.phoneTextView) TextView mPhoneLabel;
     @Bind(R.id.addressTextView) TextView mAddressLabel;
     @Bind(R.id.saveRestaurantButton) TextView mSaveRestaurantButton;
+    private Firebase mFirebaseRef;
+    private String mCurrentUserUid;
 
     private Restaurant mRestaurant;
 
@@ -43,12 +50,15 @@ public class RestaurantDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRestaurant = Parcels.unwrap(getArguments().getParcelable("restaurant"));
+        mFirebaseRef = MyRestaurantsApplication.getAppInstance().getFirebaseRef();
+        mCurrentUserUid = mFirebaseRef.getAuth().getUid();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_restaurant_detail, container, false);
         ButterKnife.bind(this, view);
+        mSaveRestaurantButton.setOnClickListener(this);
 
         Picasso.with(view.getContext())
                 .load(mRestaurant.getImageUrl())
@@ -61,5 +71,31 @@ public class RestaurantDetailFragment extends Fragment {
         mPhoneLabel.setText(mRestaurant.getPhone());
         mAddressLabel.setText(android.text.TextUtils.join(", ", mRestaurant.getAddress()));
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mWebsiteLabel) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(mRestaurant.getWebsite()));
+            startActivity(webIntent);
+        }
+        if (v == mPhoneLabel) {
+            Intent phoneIntent = new Intent(Intent.ACTION_DIAL,
+                    Uri.parse("tel:" + mRestaurant.getPhone()));
+            startActivity(phoneIntent);
+        }
+//        if (v == mAddressLabel) {
+//            Intent mapIntent = new Intent(Intent.ACTION_VIEW,
+//                    Uri.parse("geo:" + mRestaurant.getmLatitude()
+//                            + "," + mRestaurant.getmLongitude()
+//                            + "?q=(" + mRestaurant.getName() + ")"));
+//            startActivity(mapIntent);
+
+        if (v == mSaveRestaurantButton) {
+            mFirebaseRef.child("restaurants/" + mCurrentUserUid + "/"
+                    + mRestaurant.getName()).setValue(mRestaurant);
+            Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+        }
     }
 }
