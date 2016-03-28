@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.epicodus.myrestaurants.MainActivity">
+    tools:context="com.epicodus.restaurants.ui.MainActivity">
 
     <ImageView
         android:layout_width="fill_parent"
@@ -49,5 +49,14 @@
         android:hint="Enter Your ZIP Code"
         android:textColorHint="#ffffff"
         android:textAlignment="center" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+        android:id="@+id/loginButton"
+        android:layout_below="@+id/locationEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp" />
 
 </RelativeLayout>
