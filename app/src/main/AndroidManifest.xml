@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
-            android:theme="@style/NoActionBarTheme">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +22,10 @@
         </activity>
         <activity android:name=".ui.RestaurantsListActivity" />
         <activity android:name=".ui.RestaurantDetailActivity" />
-        <activity android:name=".ui.LoginActivity"></activity>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="Login/Signup"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

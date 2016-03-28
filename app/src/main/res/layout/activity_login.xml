@@ -76,6 +76,11 @@
             android:layout_marginTop="15dp"
             android:textColor="@color/colorTextIcons" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -38,25 +38,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="191dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/locationEditText"
-        android:layout_above="@+id/findRestaurantsButton"
-        android:layout_centerHorizontal="true"
-        android:hint="Enter Your ZIP Code"
-        android:textColorHint="#ffffff"
-        android:textAlignment="center" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Log In"
         android:id="@+id/loginButton"
-        android:layout_below="@+id/locationEditText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp" />
+        android:layout_marginTop="59dp"
+        android:layout_alignTop="@+id/findRestaurantsButton"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
