@@ -153,8 +153,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuthResultHandler = new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                goToMainActivity();
-                mAuthProgressDialog.hide();
+
+                if (authData.getProvider().equals("password")) {
+                    goToMainActivity();
+                    mAuthProgressDialog.hide();
+                }
             }
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
@@ -199,6 +202,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     resultIntent.putExtra("error", errorMessage);
                 }
                 setResult(MainActivity.RC_GOOGLE_LOGIN, resultIntent);
+                mFirebaseRef.authWithOAuthToken("google", token, mAuthResultHandler);
                 finish();
             }
         };
