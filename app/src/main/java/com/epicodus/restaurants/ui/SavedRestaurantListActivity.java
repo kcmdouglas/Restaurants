@@ -46,9 +46,9 @@ public class SavedRestaurantListActivity extends AppCompatActivity {
     }
 
     private void setupFirebaseQuery() {
-        String location = mFirebaseRef.child("restaurants/" + mFirebaseRef.getAuth().getUid()).toString();
-        Log.d("LOCATION", location);
-        mQuery = new Firebase("https://myyelprestaurants.firebaseio.com/restaurants/google%3A106458782077351745034");
+//        String location = mFirebaseRef.child("restaurants/" + mFirebaseRef.getAuth().getUid()).toString();
+//        Log.d("LOCATION", location);
+        mQuery = mFirebaseRef.child("restaurants/" + mFirebaseRef.getAuth().getUid());
     }
 
     private void setupRecyclerView() {
