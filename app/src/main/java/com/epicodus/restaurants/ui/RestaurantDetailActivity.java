@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.epicodus.restaurants.R;
 import com.epicodus.restaurants.adapters.RestaurantPagerAdapter;
 import com.epicodus.restaurants.models.Restaurant;
+import com.epicodus.restaurants.util.ScaleAndFadePageTransformer;
 
 import org.parceler.Parcels;
 
@@ -30,5 +31,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         adapterViewPager = new RestaurantPagerAdapter(getSupportFragmentManager(), mRestaurants);
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);
+        mViewPager.setPageTransformer(true, new ScaleAndFadePageTransformer());
     }
 }
