@@ -23,49 +23,14 @@ import com.firebase.client.Query;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SavedRestaurantListActivity extends AppCompatActivity implements OnStartDragListener {
-    private ItemTouchHelper mItemTouchHelper;
-    private Query mQuery;
+public class SavedRestaurantListActivity extends AppCompatActivity {
     private Firebase mFirebaseRef;
-    private String mCurrentUserId;
-    private FirebaseRestaurantListAdapter mAdapter;
-
-    @Bind(R.id.recyclerView) RecyclerView mRecyclerView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurants);
-        ButterKnife.bind(this);
-
-        Firebase.setAndroidContext(this);
+        setContentView(R.layout.activity_saved_restaurant_list);
         mFirebaseRef = MyRestaurantsApplication.getAppInstance().getFirebaseRef();
-        mCurrentUserId = mFirebaseRef.getAuth().getUid();
-        Log.d("Saved REST UID", mFirebaseRef.getAuth().getUid().toString());
-
-        setupFirebaseQuery();
-        setupRecyclerView();
-    }
-
-    private void setupFirebaseQuery() {
-//        String location = mFirebaseRef.child("restaurants/" + mFirebaseRef.getAuth().getUid()).toString();
-//        Log.d("LOCATION", location);
-        mQuery = mFirebaseRef.child("restaurants/" + mFirebaseRef.getAuth().getUid()).orderByChild("index");
-}
-
-    private void setupRecyclerView() {
-        mAdapter = new FirebaseRestaurantListAdapter(mQuery, Restaurant.class, this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mAdapter);
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 
     @Override
@@ -89,15 +54,5 @@ public class SavedRestaurantListActivity extends AppCompatActivity implements On
         mFirebaseRef.unauth();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        for (Restaurant restaurant : mAdapter.getItems()) {
-            restaurant.setIndex(Integer.toString(mAdapter.getItems().indexOf(restaurant)));
-            mFirebaseRef.child("restaurants/" + mFirebaseRef.getAuth().getUid() + "/"
-                    + restaurant.getName())
-                    .setValue(restaurant);
-        }
     }
 }
