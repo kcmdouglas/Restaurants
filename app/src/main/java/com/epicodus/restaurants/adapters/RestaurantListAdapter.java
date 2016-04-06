@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.epicodus.restaurants.R;
 import com.epicodus.restaurants.models.Restaurant;
 import com.epicodus.restaurants.ui.RestaurantDetailActivity;
+import com.epicodus.restaurants.util.OnRestaurantSelectedListener;
 
 import org.parceler.Parcels;
 
@@ -25,17 +26,18 @@ import butterknife.ButterKnife;
  */
 public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
     private ArrayList<Restaurant> mRestaurants = new ArrayList<>();
-    private Context mContext;
+    private OnRestaurantSelectedListener mOnRestaurantSelectedListener;
+    public RestaurantViewHolder viewHolder;
 
-    public RestaurantListAdapter(Context context, ArrayList<Restaurant> restaurants) {
-        mContext = context;
+    public RestaurantListAdapter(ArrayList<Restaurant> restaurants, OnRestaurantSelectedListener onRestaurantSelectedListener) {
+        mOnRestaurantSelectedListener = onRestaurantSelectedListener;
         mRestaurants = restaurants;
     }
 
     @Override
     public RestaurantViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.restaurant_list_item, parent, false);
-        RestaurantViewHolder viewHolder = new RestaurantViewHolder(view, mRestaurants);
+        viewHolder = new RestaurantViewHolder(view, mRestaurants, mOnRestaurantSelectedListener);
         return viewHolder;
     }
 

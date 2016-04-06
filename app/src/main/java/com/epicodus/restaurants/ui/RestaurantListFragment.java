@@ -21,6 +21,7 @@ import com.epicodus.restaurants.R;
 import com.epicodus.restaurants.adapters.RestaurantListAdapter;
 import com.epicodus.restaurants.models.Restaurant;
 import com.epicodus.restaurants.services.YelpService;
+import com.epicodus.restaurants.util.OnRestaurantSelectedListener;
 import com.firebase.client.Firebase;
 
 import java.io.IOException;
@@ -44,6 +45,17 @@ public class RestaurantListFragment extends Fragment {
     private SharedPreferences.Editor mEditor;
     private String mRecentAddress;
     private Firebase mFirebaseRef;
+    OnRestaurantSelectedListener mOnRestaurantSelectedListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mOnRestaurantSelectedListener = (OnRestaurantSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + e.getMessage());
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +130,7 @@ public class RestaurantListFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter = new RestaurantListAdapter(getContext(), mRestaurants);
+                        mAdapter = new RestaurantListAdapter(mRestaurants, mOnRestaurantSelectedListener);
                         mRecyclerView.setAdapter(mAdapter);
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
 
