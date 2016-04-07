@@ -2,6 +2,7 @@ package com.epicodus.restaurants;
 
 import android.content.Intent;
 import android.os.Build;
+import android.view.Menu;
 import android.widget.TextView;
 
 import com.epicodus.restaurants.ui.MainActivity;
@@ -17,6 +18,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowActivity;
 
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
@@ -58,5 +60,13 @@ public class MainActivityTest {
             assertTrue(actualIntent.filterEquals(expectedIntent));
         }
     }
+
+//    @Test
+//    public void logoutActivity() {
+//        Menu menu =(Menu) activity.findViewById(R.menu.menu_main);
+//        activity.findViewById(R.id.action_logout).performClick();
+//        Firebase ref = MyRestaurantsApplication.getAppInstance().getFirebaseRef();
+//        assertNull(ref);
+//    }
 
 }

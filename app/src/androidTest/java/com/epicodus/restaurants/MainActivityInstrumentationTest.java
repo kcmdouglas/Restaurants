@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -23,6 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static java.lang.Thread.sleep;
+import static org.hamcrest.CoreMatchers.allOf;
 
 /**
  * Created by Guest on 4/7/16.
@@ -68,20 +70,17 @@ public class MainActivityInstrumentationTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        onView(withId(R.id.viewPager)).check(matches(isDisplayed())).perform(swipeLeft());
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        onView(withId(R.id.viewPager)).check(matches(isDisplayed())).perform(swipeLeft());
-        try {
-            sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        onView(allOf(withId(R.id.restaurantNameTextView), isDisplayed())).check(matches(withText("Screen Door")));
     }
 
-
+    @Test
+    public void logOutTesting() {
+        try {
+            sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        onView(withId(R.id.action_logout)).perform(click());
+        onView(withId(R.id.emailTextView)).check(matches(withText("My Restaurants")));
+    }
 }
