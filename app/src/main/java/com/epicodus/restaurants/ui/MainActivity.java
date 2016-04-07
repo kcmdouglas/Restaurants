@@ -18,6 +18,8 @@ import com.epicodus.restaurants.R;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
+import junit.framework.Test;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
